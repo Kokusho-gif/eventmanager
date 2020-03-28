@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block customcss %}
+<link rel="stylesheet" type="text/css" href="{% static 'list.css' %}">
+{% endblock customcss %}
+
+{% block content %}
+<div class="container">
+    <div class="list-group d-flex p-2 bd-highlight">
+        {% for object in object_list %}
+        <a href="{% url 'detail' object.pk %}" class="list-group-item list-group-item-action">
+          <div class="d-flex w-100">
+            <div class="mr-auto p-2 bd-highlight">
+              <h5 class="mb-1">{{ object.eventtitle }}</h5>
+            </div>
+            <div class="p-2 bd-highlight">
+              <small>{{ object.eventdate }}</small>
+            </div>
+            <div class="p-2 bd-highlight">
+              <small>{{ object.location }}</small>
+            </div>
+          </div>
+          <div class="d-flex w-100">
+            <div class="ml-auto p-2 bd-highlight">
+              <p class="mb-1">Author : {{ object.author }}</p>
+              <p class="mb-1"></p>Length : {{ object.eventlength }}</p>
+            </div>
+            
+            <button type="button" class="btn btn-primary">
+              <i class="far fa-thumbs-up"></i> <span class="badge badge-light">{{ object.good }}</span>
+            </button>
+
+          </div>
+        </a>
+        {% endfor %}
+    </div>
+</div>
+{% endblock content %}
