@@ -1,12 +1,42 @@
+<!--
+  base.htmlをコピーし、それを土台としてさらにコードを加えていく
+-->
 {% extends 'base.html' %}
 {% load static %}
 
+<!--
+  base.htmlのスタイルシートから少し修正するため、カスタムcssを作成
+-->
 {% block customcss %}
 <link rel="stylesheet" type="text/css" href="{% static 'list.css' %}">
 {% endblock customcss %}
 
 {% block content %}
-<div class="container">
+
+<!--
+  <div>のクラス名はBootstrap CSSにて適用されたクラス名を指定することで
+  装飾が施される
+  https://getbootstrap.com/docs/3.4/css/
+
+  @html構成
+  containerクラス：Boorstrapの決まりでコンテナでコンテンツを囲う必要がある
+  list-groupクラス：リスト項目全体を囲う枠
+  list-group-itemクラス：タグ内の領域をクリックすればobject_listオブジェクトの
+    プライマリキーを添えて、detail.htmlへ飛ばす
+
+  以降list_objectの内容を羅列
+
+  btnクラス：グッドボタンを作成。fa-thumbs-upでfaviconのイメージを挿入。
+    また、現在のいいね数(object_list.good)を記載
+
+
+  @引数
+  object_list:views.pyから渡されるオブジェクトで
+    eventtitle, eventdateなどの情報(オブジェクト内変数)を持つ
+
+  
+-->
+  <div class="container">
     <div class="list-group d-flex p-2 bd-highlight">
         {% for object in object_list %}
         <a href="{% url 'detail' object.pk %}" class="list-group-item list-group-item-action">

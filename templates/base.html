@@ -1,3 +1,6 @@
+<!--
+  base.htmlにははすべてのページに共通するレイアウトを記載
+-->
 <!doctype html>
 <html lang="en">
   <head>
@@ -16,7 +19,18 @@
     <title>Hello, world!</title>
   </head>
   <body>
+    <!--
+      ヘッダー部分を作成。
+      @構成
+      navbarクラス：ナビバー全体の枠
+      navbar-brandクラス：アプリ名を記載。リンク先はイベントリスト
+      collapseクラス：メニューにあたる。囲まれたコンテンツを折り返して表示している
+      <ul> ：メニューの内容をリスト表示している。もしuser情報をレンダリング先からもらっていたら
+        ユーザ用のメニューに、もらっていなけらば一般向けのメニューに切り替えるようif文を記載
+      form-inlineクラス：検索ボックスとボタンを配置。未実装。
       
+    -->  
+
       <header>
         <!-- Fixed navbar -->
         <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
@@ -56,6 +70,10 @@
         </nav>
       </header>
       
+      <!--
+        {block content}{endblock}を記載することで他のhtmlでコンテンツを追加するときはここに追加できるようになる
+        またヘッダーの分だけ上に余白（padding）を与えている
+      -->
       <div class="container" style="padding-top:70px;">
         {% block content %}
         {% endblock content %}
