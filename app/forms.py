@@ -18,7 +18,7 @@ class EventCreateForm(forms.ModelForm):
         # first call parent's constructor
         super(EventCreateForm, self).__init__(*args, **kwargs)
         # there's a `fields` property now
-        #self.fields['author'].required = False
+        self.fields['author'].required = False
 
     class Meta:
         model = Event

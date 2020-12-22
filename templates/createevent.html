@@ -9,14 +9,39 @@
 
 {% block content %}
 {{ form.media }}
+<!--
+    イベント項目の入力画面を生成
+    @変数
+    current_status: "create"または"edit"となる。新規作成の場合はcreateのform出力が、更新の場合はelse句内のform出力がなされる。
+    form:Modelformクラスを引き継いだEventCreateFormクラスのインスタンス。for文でインスタンス内のフィールド名や値を取り出せる。
+        例. field.labelには"eventtitle","agenda"などが相当する。
+    @構成
+    <table>:formインスタンスはあらかじめhtmlでのform出力に対応した形で渡されるので、簡易なコードでフォームを実現できる。
+    {% if field.label =="Author" %}:もしフィールド名がAuthorである場合、言わずもがな作成者はログインしているユーザ名なので入力を省くようにif句を書いた。
+        なので通常はelse句が使用される。
+    @form送信後の遷移先
+    views.usermypagefunc。event_pk変数が送信されるのは、current_status=="edit"の時のみ。
+
+    
+-->  
+{% if current_status == "create" %}
 <form method="POST">{% csrf_token %}
     <table>
         {% for field in form %}
         <tr>
             {% if field.label == "Author" %}
+            <!--
+                フィールド値の入力欄の出力。AuthorのみあらかじめデータがPOST送信されており、その値があらかじめ格納される。
+                またこのフィールドはforms.pyで非表示に設定してある。
+            -->
+            <td>{{ field }}</td>
             {% else %}
+            <!--フィールド名とフィールド値の入力欄の出力-->
             <th>{{ field.label }}:</th>
             <td>{{ field }}</td>
+            <!--
+                必須項目にはコメ印が付くように設定
+            -->
             <td style="color:red;">{% if field.field.required %}*{% endif %}</td>
             {% endif %}
         </tr>
@@ -25,4 +50,32 @@
     </table>
     <button class="btn btn-primary" type="submit">Create</button>
 </form>
+{% else %}
+<!--
+    @構成
+    <form>:actionにcreateeventを指定。こうすることでurls.pyによってcreateeventという名前に紐図けられたcreateeventfuncが呼び出される。
+        この指定がなければ遷移元のusermypagefuncが呼び出し中となる。フォーム入力からのデータベースへの登録・更新はcreateeventfuncに実装したので
+        このactionが必要となった。
+-->
+<form method="POST" action="{% url 'createevent' %}">{% csrf_token %}
+    <table>
+        {% for field in form %}
+        <tr>
+            {% if field.label == "Author" %}
+            <td>{{ field }}</td>
+            {% else %}
+            <th>{{ field.label }}:</th>
+            <td>{{ field }}</td>
+            <td style="color:red;">{% if field.field.required %}*{% endif %}</td>
+            {% endif %}
+        </tr>
+        {% endfor %}
+    </table>
+    <!--
+        <input>:POST送信先に現在更新中のイベントのpkを渡したいため、inputタグを用いた。type="hidden"とし非表示である。
+    -->
+    <input type="hidden" name="event_pk" value="{{ event_pk }}">
+    <button class="btn btn-primary" type="submit">Recreate</button>
+</form>
+{% endif %}
 {% endblock content %}

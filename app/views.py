@@ -24,17 +24,21 @@ def listfunc(request):
 
 def createeventfunc(request):
     if request.method == 'POST':
-        form =EventCreateForm(request.POST)
+        if request.POST["event_pk"]:
+            event_instance = Event.objects.get(pk=request.POST["event_pk"])
+            form = EventCreateForm(request.POST, instance=event_instance)
+        else:
+            form =EventCreateForm(request.POST)     
         if form.is_valid():
             form.save()
             return redirect('list')
-        return render(request,'createevent.html',{'form':form})
+        print("だめ")
+        return render(request,'createevent.html',{'form':form, 'current_status':"create"})
         
     else:
         default_data = {'author':User.objects.get(pk=request.user.pk)}
         form =EventCreateForm(default_data)
-        return render(request,'createevent.html',{'form':form})
-
+        return render(request,'createevent.html',{'form':form, 'current_status':"create"})
 
 
 def signupfunc(request):
@@ -79,11 +83,34 @@ def logoutfunc(request):
     return redirect('login')
 
 def usermypagefunc(request, current_status):
+
+    # ユーザが認証されているか判定
     if request.user.is_authenticated:
+        # リクエストがPOSTか判定。POST送信はmypage.html内のeditが押されたときである。
+        # 既存イベントの更新ページへの遷移を担当
+        if request.method=='POST':
+            # イベントのpkを取得し、データベースから検索をし、オブジェクトを取得。
+            event_pk = request.POST['event_pk']
+            Event_obj = Event.objects.get(pk=event_pk)
+            # 引数用の辞書作成
+            default_data = {'eventtitle':Event_obj.eventtitle,'eventdate':Event_obj.eventdate,
+            'location':Event_obj.location,'agenda':Event_obj.agenda,'author':Event_obj.author}
+            # htmlに渡すための初期条件付きformインスタンスを生成
+            form =EventCreateForm(default_data)
+
+            # current_status=="edit"とし、createevent.htmlをレンダリング
+            return render(request, 'createevent.html',{'form':form, 'current_status':"edit","event_pk":event_pk})    
+
+        # マイページへの遷移を担当
+        # ユーザ名とそのユーザが作成したイベントを取得   
         user = User.objects.get(pk=request.user.pk)
         event_list = Event.objects.filter(author=request.user.pk)
+
+        # マイページをレンダリング。ここでのcurrent_status変数は、createevent.htmlレンダリング時とは違い。
+        # 0→home 1→Products 2→Settingsを表していて、各項目を選択したときのhtml表示を分岐させるために使用
         return render(request, 'mypage/mypage.html',{'user':user,'current_status':current_status,'event_list':event_list})
     else:
+        # ユーザ認証に失敗したとき、ログイン画面へ遷移
         return redirect('login')
 
 def detailfunc(request, event_pk):
