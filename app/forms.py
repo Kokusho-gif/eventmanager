@@ -22,7 +22,7 @@ class EventCreateForm(forms.ModelForm):
 
     class Meta:
         model = Event
-        fields = ('eventtitle','eventdate','location','agenda','author')
+        fields = ('eventtitle','eventdate','location','agenda','author','background')
         widgets={
             'eventtitle':forms.Textarea(attrs={'cols':80,'rows':1}),
             'eventdate':datetimepicker.DatePickerInput(
@@ -42,3 +42,4 @@ class EventCreateForm(forms.ModelForm):
                 'max_length':_('Title is too long')
             }
         }
+

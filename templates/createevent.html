@@ -17,7 +17,7 @@
         例. field.labelには"eventtitle","agenda"などが相当する。
     @構成
     <table>:formインスタンスはあらかじめhtmlでのform出力に対応した形で渡されるので、簡易なコードでフォームを実現できる。
-    {% if field.label =="Author" %}:もしフィールド名がAuthorである場合、言わずもがな作成者はログインしているユーザ名なので入力を省くようにif句を書いた。
+    if field.label =="Author":もしフィールド名がAuthorである場合、言わずもがな作成者はログインしているユーザ名なので入力を省くようにif句を書いた。
         なので通常はelse句が使用される。
     @form送信後の遷移先
     views.usermypagefunc。event_pk変数が送信されるのは、current_status=="edit"の時のみ。

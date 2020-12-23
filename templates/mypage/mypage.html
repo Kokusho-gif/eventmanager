@@ -11,14 +11,17 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-    <link rel="stylesheet" href="{% static 'mypage-dashboard.css' %}"
+    <link rel="stylesheet" href="{% static 'css/mypage-dashboard.css' %}">
 
-
+    <!-- ポップアップ用JQueryプラグイン -->
+    <link rel="stylesheet" href="{% static 'css/magnific-popup.css' %}" />
     {% block customcss %}
+    <link rel="stylesheet" href="{% static 'css/mypage.css'%}">
     {% endblock customcss %}
     <title>Hello, world!</title>
   </head>
   <body>
+    {% block content %}
     {% csrf_token %}
       
       <header>
@@ -131,11 +134,11 @@
                               <p class="card-text text-truncate" style="height: 2rem;">{{ item.agenda }}</p>
                               <div class="d-flex justify-content-between align-items-center">
                                 <div class="btn-group">
-                                  <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
                                   <form method="POST">{% csrf_token %}
                                     <input type="hidden" name="event_pk" value="{{ item.pk }}">
-                                    <button type="submit" class="btn btn-sm btn-outline-secondary">View</button>
+                                    <button type="submit" class="btn btn-sm btn-outline-secondary">Edit</button>
                                   </form>
+                                  <a href="#event-popup{{ item.pk }}" class="btn btn-sm btn-outline-secondary open-popup-link">View</a>
                                 </div>
                                 <small class="text-muted">9 mins</small>
                               </div>
@@ -144,29 +147,77 @@
                           </span>
                         </div>
                       </div>
+                      <!-- 
+                        ポップアップによるイベント詳細の表示
+                        イベント一覧のviewと書かれたaタグにてリンク先にid名のevent-popupを指定しており、
+                        aタグをクリックするとhtml下部に書かれたjs文にてポップアップが実行される。
+                        イベントごとに表示する内容を変えるのでforタグの中に配置し,id名もそれぞれ独立した名前が付くようにした。
+                       -->
+                      <div id="event-popup{{ item.pk }}" class="white-popup mfp-hide popup-all">
+                        <div class="popup-content popup-content-left">
+
+                          <div class="popup-title">
+                            <h1>Title : </h1>
+                            <p>{{ item.eventtitle }}</p>
+                          </div>
+
+                          <div class="popup-date">
+                            <h1>Date : </h1>
+                            <p>{{ item.eventdate }}</p>
+                          </div>
+
+                          <div class="popup-agenda">
+                            <h1>Agenda : </h1>
+                            <p>{{ item.agenda }}</p>
+                          </div>
+
+                        </div>
+
+                        <div class="popup-content popup-content-right">
+
+                          <div class="popup-agenda">
+                            <h1>Agenda : </h1>
+                            <p>{{ item.agenda }}</p>
+                          </div>
+                        
+                        </div>
+
+                        <div class="popup-bottom">
+                            <div class="popup-good">
+                              <p><i class="far fa-thumbs-up"></i> {{ item.good }}</p>
+                            </div>
+                        </div>
+  
+                      </div>
                       {% endfor %}
 
                     </div>
                   </div>
-              
-              </main>
-              
-            </div>
-          </main>
+                </main>
+                
+              </div>
+            </main>
+          </div>
         </div>
-      </div>
-      {% block content %}
+
       {% endblock content %}
 
-    <!-- Optional JavaScript -->
+    <!-- Optional JavaScript-->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.9.0/feather.min.js"></script>
     <script>window.jQuery || document.write('<script src="/docs/4.4/assets/js/vendor/jquery.slim.min.js"><\/script>')</script>
     <script>feather.replace()</script>
-
-    
+    <!-- ポップアップ用JQueryプラグイン -->
+    <script src="{% static 'js/jquery.magnific-popup.min.js' %}"></script>
+    <script>
+        $('.open-popup-link').magnificPopup({
+          type:'inline',
+          midClick: true // Allow opening popup on middle mouse click. Always set it to true if you don't provide alternative source in href.
+        });
+    </script>
   </body>
 </html>
