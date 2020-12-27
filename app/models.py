@@ -11,6 +11,7 @@ class Event(models.Model):
     good = models.IntegerField(null=True, blank=True,default=0)
     read = models.IntegerField(null=True, blank=True,default=0)
     author = models.ForeignKey(User, to_field='id', on_delete=models.SET_NULL, null=True)
+    image = models.ImageField(upload_to='image/event_image', verbose_name='イベント画像', null=True, blank=True)
     background_color = (
         ('green','green'),
         ('pink','pink'),
@@ -25,9 +26,9 @@ class Event(models.Model):
     class Meta:
         db_table = 'Event'
 
-class Image(models.Model):
+class Backgroundimage(models.Model):
     event_pk = models.ForeignKey(Event, on_delete=models.CASCADE)
-    picture = models.ImageField(upload_to='images/')
+    picture = models.ImageField(upload_to='background/')
     title = models.CharField(max_length=200)
 
     def __str__(self):

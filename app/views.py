@@ -26,9 +26,9 @@ def createeventfunc(request):
     if request.method == 'POST':
         if request.POST["event_pk"]:
             event_instance = Event.objects.get(pk=request.POST["event_pk"])
-            form = EventCreateForm(request.POST, instance=event_instance)
+            form = EventCreateForm(request.POST,request.FILES, instance=event_instance)
         else:
-            form =EventCreateForm(request.POST)     
+            form =EventCreateForm(request.POST, request.FILES)     
         if form.is_valid():
             form.save()
             return redirect('list')
@@ -94,12 +94,14 @@ def usermypagefunc(request, current_status):
             Event_obj = Event.objects.get(pk=event_pk)
             # 引数用の辞書作成
             default_data = {'eventtitle':Event_obj.eventtitle,'eventdate':Event_obj.eventdate,
-            'location':Event_obj.location,'agenda':Event_obj.agenda,'author':Event_obj.author}
+            'location':Event_obj.location,'agenda':Event_obj.agenda,'author':Event_obj.author,
+            'image':Event_obj.image, 'background':Event_obj.background}
             # htmlに渡すための初期条件付きformインスタンスを生成
             form =EventCreateForm(default_data)
 
             # current_status=="edit"とし、createevent.htmlをレンダリング
-            return render(request, 'createevent.html',{'form':form, 'current_status':"edit","event_pk":event_pk})    
+            # image_objのみhtml内で画像表示をさせたいので個別で変数を設定
+            return render(request, 'createevent.html',{'image_obj':Event_obj.image,'form':form, 'current_status':"edit","event_pk":event_pk})    
 
         # マイページへの遷移を担当
         # ユーザ名とそのユーザが作成したイベントを取得   
