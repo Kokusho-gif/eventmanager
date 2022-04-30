@@ -10,6 +10,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from .models import Event
 from .forms import UserUpdateForm, EventCreateForm
 
+from PIL import Image
+
 # Create your views here.
 def listfunc(request):
     object_list = Event.objects.all()
@@ -24,15 +26,14 @@ def listfunc(request):
 
 def createeventfunc(request):
     if request.method == 'POST':
-        if request.POST["event_pk"]:
-            event_instance = Event.objects.get(pk=request.POST["event_pk"])
+        if request.POST.get('event_pk',False):
+            event_instance = Event.objects.get(pk=request.POST.get('event_pk'))
             form = EventCreateForm(request.POST,request.FILES, instance=event_instance)
         else:
             form =EventCreateForm(request.POST, request.FILES)     
         if form.is_valid():
             form.save()
             return redirect('list')
-        print("だめ")
         return render(request,'createevent.html',{'form':form, 'current_status':"create"})
         
     else:
@@ -43,8 +44,8 @@ def createeventfunc(request):
 
 def signupfunc(request):
     if request.method ==  'POST':
-        username = request.POST['username']
-        password = request.POST['password']
+        username = request.POST('username')
+        password = request.POST('password')
         try:
             User.objects.get(username=username)
             return render(request, 'signup.html',{'error':'This username is already exist'})
@@ -122,3 +123,9 @@ def detailfunc(request, event_pk):
     else:
         return redirect('login',event_pk=event_pk)
     
+def crop_center(pil_img, crop_width, crop_height):
+    img_width, img_height = pil_img.size
+    return pil_img.crop(((img_width - crop_width) // 2,
+                         (img_height - crop_height) // 2,
+                         (img_width + crop_width) // 2,
+                         (img_height + crop_height) // 2))

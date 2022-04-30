@@ -119,6 +119,7 @@
           </nav>
       
           <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+            {% if current_status == 0 %}
             <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
               <main role="main">
                   <div class="container">
@@ -137,8 +138,10 @@
                                   <form method="POST">{% csrf_token %}
                                     <input type="hidden" name="event_pk" value="{{ item.pk }}">
                                     <button type="submit" class="btn btn-sm btn-outline-secondary">Edit</button>
-                                  </form>
-                                  <a href="#event-popup{{ item.pk }}" class="btn btn-sm btn-outline-secondary open-popup-link">View</a>
+                                  </form>   
+                                  <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#event-popup{{ item.pk }}">
+                                    View
+                                  </button>                              
                                 </div>
                                 <small class="text-muted">9 mins</small>
                               </div>
@@ -153,42 +156,27 @@
                         aタグをクリックするとhtml下部に書かれたjs文にてポップアップが実行される。
                         イベントごとに表示する内容を変えるのでforタグの中に配置し,id名もそれぞれ独立した名前が付くようにした。
                        -->
-                      <div id="event-popup{{ item.pk }}" class="white-popup mfp-hide popup-all">
-                        <div class="popup-content popup-content-left">
-
-                          <div class="popup-title">
-                            <h1>Title : </h1>
-                            <p>{{ item.eventtitle }}</p>
-                          </div>
-
-                          <div class="popup-date">
-                            <h1>Date : </h1>
-                            <p>{{ item.eventdate }}</p>
-                          </div>
-
-                          <div class="popup-agenda">
-                            <h1>Agenda : </h1>
-                            <p>{{ item.agenda }}</p>
-                          </div>
-
-                        </div>
-
-                        <div class="popup-content popup-content-right">
-
-                          <div class="popup-agenda">
-                            <h1>Agenda : </h1>
-                            <p>{{ item.agenda }}</p>
-                          </div>
-                        
-                        </div>
-
-                        <div class="popup-bottom">
-                            <div class="popup-good">
-                              <p><i class="far fa-thumbs-up"></i> {{ item.good }}</p>
+                       <div class="modal fade" id="event-popup{{ item.pk }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h5 class="modal-title" id="exampleModalLabel">{{ item.eventtitle }}</h5>
+                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                              </button>
                             </div>
+                            <div class="modal-body">
+                              {{ item.agenda }}
+                            </div>
+                            <div class="modal-footer">
+                              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                              <button type="button" class="btn btn-primary">Save changes</button>
+                            </div>
+                          </div>
                         </div>
-  
                       </div>
+
+                  
                       {% endfor %}
 
                     </div>
@@ -196,6 +184,26 @@
                 </main>
                 
               </div>
+              {% endif %}
+              {% if current_status == 2 %}
+              <div class="profile-contents">
+
+                <div class="profile-content">
+                  <div class="profile-left">
+                    <div class="profile-image"><img src="" alt="プロフ画像"></div>
+                    <div><h1>Name</h1></div>
+                  </div>
+                  <div class="profile-right">
+                    <div class="message"><p>はじめまして</p></div>
+                  </div>
+                </div>
+                <div class="profile-content profile-footer">
+                  <div class="account-change"><p>アカウント情報の変更</p></div>
+  
+                </div>
+              </div>
+              {% endif %}
+
             </main>
           </div>
         </div>

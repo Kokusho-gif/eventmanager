@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth.models import User
 from django.utils.translation import gettext_lazy as _
 
-import bootstrap_datepicker_plus as datetimepicker
+import bootstrap_datepicker_plus.widgets as datetimepicker
 from PIL import Image
 
 from .models import Event
@@ -36,7 +36,7 @@ class EventCreateForm(forms.ModelForm):
             ),
             'location':forms.Textarea(attrs={'cols':80,'rows':1}),
             'agenda':forms.Textarea(attrs={'cols':80,'rows':10}),
-            'author':forms.HiddenInput()
+            'author':forms.HiddenInput(),
         }
         error_messages = {
             'eventtitle':{

@@ -39,17 +39,13 @@
   <div class="container">
     <div class="list-group d-flex p-2 bd-highlight">
         {% for object in object_list %}
-        <a href="{% url 'detail' object.pk %}" class="list-group-item list-group-item-action">
+        <a href="{% url 'detail' object.pk %}" class="list-group-item list-group-item-action" style="background-image: url('{% static object.background %}');">
           <div class="d-flex w-100">
             <div class="mr-auto p-2 bd-highlight">
               <h5 class="mb-1">{{ object.eventtitle }}</h5>
             </div>
             <div class="p-2 bd-highlight">
               <small>{{ object.eventdate }}</small>
-            </div>
-            <div class="p-2 bd-highlight">
-              <img src="{{ object.image.url }}" alt="">
-              <small>{{ object.image }}</small>
             </div>
             <div class="p-2 bd-highlight">
               <small>{{ object.location }}</small>
