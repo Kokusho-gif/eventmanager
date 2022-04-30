@@ -25,7 +25,7 @@ SECRET_KEY = '2!$2f=n-qt^h8^xk&i1lmh$d&3&*vhe2!75bjc#8p12wgqwhlv'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = [https://kokusho2022.pythonanywhere.com/]
+ALLOWED_HOSTS = ['https://kokusho2022.pythonanywhere.com/']
 
 
 # Application definition
