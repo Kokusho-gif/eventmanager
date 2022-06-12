@@ -23,9 +23,12 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '2!$2f=n-qt^h8^xk&i1lmh$d&3&*vhe2!75bjc#8p12wgqwhlv'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ['https://kokusho2022.pythonanywhere.com/']
+if(DEBUG is not True):
+    ALLOWED_HOSTS = ['localhost', '.pythonanywhere.com']
+else:
+    ALLOWED_HOSTS = ['*'];
 
 
 # Application definition
@@ -88,6 +91,19 @@ DATABASES = {
 }
 
 
+# For pythonanywhere.com [Deploy]
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'kokusho2022$default',
+#         'USER': 'kokusho2022',
+#         'PASSWORD': 'kokusho313152',
+#         'HOST': 'kokusho2022.mysql.pythonanywhere-services.com',
+#         'PORT': '',
+#     }
+# }
+
+
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
 
@@ -123,10 +139,11 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
+STATIC_ROOT = os.path.join(BASE_DIR, '/static')
 
 STATIC_URL = '/static/'
 
-MEDIA_ROOT = os.path.join(BASE_DIR,'media')
+MEDIA_ROOT = os.path.join(BASE_DIR,'/media')
 
 MEDIA_URL = '/media/'
 

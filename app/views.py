@@ -16,11 +16,11 @@ from PIL import Image
 def listfunc(request):
     object_list = Event.objects.all()
     if request.user.is_authenticated:
-        print('yes')
+        print("yes")
         user = User.objects.get(pk=request.user.pk)
         return render(request, 'list.html',{'object_list':object_list,'user':user})
     else:
-        print('no')
+        print("no")
         return render(request, 'list.html',{'object_list':object_list})
 
 
@@ -44,8 +44,8 @@ def createeventfunc(request):
 
 def signupfunc(request):
     if request.method ==  'POST':
-        username = request.POST('username')
-        password = request.POST('password')
+        username = request.POST.get('username')
+        password = request.POST.get('password')
         try:
             User.objects.get(username=username)
             return render(request, 'signup.html',{'error':'This username is already exist'})

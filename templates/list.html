@@ -1,7 +1,7 @@
 <!--
   base.htmlをコピーし、それを土台としてさらにコードを加えていく
 -->
-{% extends 'base.html' %}
+{% extends 'templates/base.html' %}
 {% load static %}
 
 <!--
@@ -33,6 +33,7 @@
   @引数
   object_list:views.pyから渡されるオブジェクトで
     eventtitle, eventdateなどの情報(オブジェクト内変数)を持つ
+  user:もしログイン状態であれば渡されるオブジェクト
 
   
 -->
@@ -56,13 +57,13 @@
               <p class="mb-1">Author : {{ object.author }}</p>
               <p class="mb-1"></p>Length : {{ object.eventlength }}</p>
             </div>
-            
-            <button type="button" class="btn btn-primary">
-              <i class="far fa-thumbs-up"></i> <span class="badge badge-light">{{ object.good }}</span>
-            </button>
-
           </div>
         </a>
+              {% if user.username %}
+            <button type="submit" class="btn btn-primary">
+              <i class="far fa-thumbs-up"></i> <span class="badge badge-light">{{ object.good }}</span>
+            </button>
+              {% endif %}
         {% endfor %}
     </div>
 </div>
