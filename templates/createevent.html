@@ -1,4 +1,4 @@
-{% extends 'templates/base.html' %}
+{% extends 'base.html' %}
 {% load static %}
 {% block customcss %}
 <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
@@ -22,8 +22,8 @@
     @form送信後の遷移先
     views.usermypagefunc。event_pk変数が送信されるのは、current_status=="edit"の時のみ。
 
-    
--->  
+
+-->
 {% if current_status == "create" %}
 <form method="POST" enctype="multipart/form-data">{% csrf_token %}
     <table>

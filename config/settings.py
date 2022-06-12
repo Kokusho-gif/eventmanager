@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
+from django.core.management.utils import get_random_secret_key
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -20,10 +21,11 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '2!$2f=n-qt^h8^xk&i1lmh$d&3&*vhe2!75bjc#8p12wgqwhlv'
+# SECRET_KEY = '2!$2f=n-qt^h8^xk&i1lmh$d&3&*vhe2!75bjc#8p12wgqwhlv'
+SECRET_KEY = get_random_secret_key()
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 if(DEBUG is not True):
     ALLOWED_HOSTS = ['localhost', '.pythonanywhere.com']
@@ -60,7 +62,7 @@ ROOT_URLCONF = 'config.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR, 'templates'],
+        'DIRS': ['/home/kokusho2022/eventmanager/templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -79,29 +81,29 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'Event_Seattle',
-        'USER': 'Kokusho',
-        'PASSWORD': 'passw0rd',
-        'HOST': 'localhost',
-        'PORT': '5433',
-    }
-}
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': 'Event_Seattle',
+#         'USER': 'Kokusho',
+#         'PASSWORD': 'passw0rd',
+#         'HOST': 'localhost',
+#         'PORT': '5433',
+#     }
+# }
 
 
 # For pythonanywhere.com [Deploy]
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.mysql',
-#         'NAME': 'kokusho2022$default',
-#         'USER': 'kokusho2022',
-#         'PASSWORD': 'kokusho313152',
-#         'HOST': 'kokusho2022.mysql.pythonanywhere-services.com',
-#         'PORT': '',
-#     }
-# }
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'kokusho2022$default',
+        'USER': 'kokusho2022',
+        'PASSWORD': 'kokusho313152',
+        'HOST': 'kokusho2022.mysql.pythonanywhere-services.com',
+        'PORT': '',
+    }
+}
 
 
 # Password validation
@@ -139,11 +141,11 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
-STATIC_ROOT = os.path.join(BASE_DIR, '/static')
+STATIC_ROOT = os.path.join(BASE_DIR, 'deploy/static')
 
 STATIC_URL = '/static/'
 
-MEDIA_ROOT = os.path.join(BASE_DIR,'/media')
+MEDIA_ROOT = os.path.join(BASE_DIR,'media')
 
 MEDIA_URL = '/media/'
 
